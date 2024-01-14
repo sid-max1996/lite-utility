@@ -22,6 +22,7 @@
     }
   },
   "scripts": {
+    "dev:docs": "npm run start --prefix docs-website",
     "build": "npm run check && vite build",
     "preview": "vite preview",
     "check": "npm run prettier && npm run lint && tsc && vitest run",
