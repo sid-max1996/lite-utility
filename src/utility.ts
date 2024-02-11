@@ -1,4 +1,4 @@
-export function promisifyFun<R, T extends any[]>(fn: (...args: T) => R | Promise<R>): (...args: T) => Promise<R> {
+export function promisifyFn<R, T extends any[]>(fn: (...args: T) => R | Promise<R>): (...args: T) => Promise<R> {
   return (...args: T) => {
     const valueOrPromise = fn(...args);
     if (valueOrPromise instanceof Promise) return valueOrPromise;

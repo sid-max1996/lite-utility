@@ -30,7 +30,12 @@ export class LiteState<T> extends LiteAutoBind implements IState<T> {
   set(newValue: T) {
     this.value = newValue;
     for (const callback of this.subscribers) {
-      callback(this.value);
+      try {
+        callback(this.value);
+      } catch (err) {
+        /* tslint:disable-next-line */
+        console.error(err);
+      }
     }
   }
 

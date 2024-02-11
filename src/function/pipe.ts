@@ -3,41 +3,37 @@
  * Performs left-to-right function composition. The first argument may have any arity, the remaining arguments must be unary.
  *
  * @example
- * import { createPipeFun } from 'lite-utility/function'
+ * import { pipeFn } from 'lite-utility/function'
  *
  * const len = (s: string): number => s.length
  * const double = (n: number): number => n * 2
  *
- * const f = createPipeFun(len, double)
+ * const f = pipeFn(len, double)
  *
  * assert.strictEqual(f('aaa'), 6)
  *
- * @since 1.0.0
  */
-export function createPipeFun<A extends ReadonlyArray<unknown>, B>(ab: (...a: A) => B): (...a: A) => B;
-export function createPipeFun<A extends ReadonlyArray<unknown>, B, C>(
-  ab: (...a: A) => B,
-  bc: (b: B) => C,
-): (...a: A) => C;
-export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D>(
+export function pipeFn<A extends ReadonlyArray<unknown>, B>(ab: (...a: A) => B): (...a: A) => B;
+export function pipeFn<A extends ReadonlyArray<unknown>, B, C>(ab: (...a: A) => B, bc: (b: B) => C): (...a: A) => C;
+export function pipeFn<A extends ReadonlyArray<unknown>, B, C, D>(
   ab: (...a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
 ): (...a: A) => D;
-export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E>(
+export function pipeFn<A extends ReadonlyArray<unknown>, B, C, D, E>(
   ab: (...a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
   de: (d: D) => E,
 ): (...a: A) => E;
-export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E, F>(
+export function pipeFn<A extends ReadonlyArray<unknown>, B, C, D, E, F>(
   ab: (...a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
   de: (d: D) => E,
   ef: (e: E) => F,
 ): (...a: A) => F;
-export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E, F, G>(
+export function pipeFn<A extends ReadonlyArray<unknown>, B, C, D, E, F, G>(
   ab: (...a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
@@ -45,7 +41,7 @@ export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E, F, G
   ef: (e: E) => F,
   fg: (f: F) => G,
 ): (...a: A) => G;
-export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E, F, G, H>(
+export function pipeFn<A extends ReadonlyArray<unknown>, B, C, D, E, F, G, H>(
   ab: (...a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
@@ -54,7 +50,7 @@ export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E, F, G
   fg: (f: F) => G,
   gh: (g: G) => H,
 ): (...a: A) => H;
-export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E, F, G, H, I>(
+export function pipeFn<A extends ReadonlyArray<unknown>, B, C, D, E, F, G, H, I>(
   ab: (...a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
@@ -64,7 +60,7 @@ export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E, F, G
   gh: (g: G) => H,
   hi: (h: H) => I,
 ): (...a: A) => I;
-export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E, F, G, H, I, J>(
+export function pipeFn<A extends ReadonlyArray<unknown>, B, C, D, E, F, G, H, I, J>(
   ab: (...a: A) => B,
   bc: (b: B) => C,
   cd: (c: C) => D,
@@ -75,7 +71,7 @@ export function createPipeFun<A extends ReadonlyArray<unknown>, B, C, D, E, F, G
   hi: (h: H) => I,
   ij: (i: I) => J,
 ): (...a: A) => J;
-export function createPipeFun(
+export function pipeFn(
   ab: Function,
   bc?: Function,
   cd?: Function,

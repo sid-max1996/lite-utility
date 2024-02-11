@@ -1,6 +1,6 @@
 import { LiteAutoBind } from '../auto-bind';
 import { LiteEvent } from './event';
-import { promisifyFun } from '../utility';
+import { promisifyFn } from '../utility';
 
 type EventId = {
   eventId: number;
@@ -48,7 +48,7 @@ export default class LiteHandler<ParamsT, ResT> extends LiteAutoBind implements 
     this.requestEvent.unsubscribeAll();
     const unsubscribe = this.requestEvent.on(async ({ params, eventId }) => {
       try {
-        const result = await promisifyFun(handler)(params);
+        const result = await promisifyFn(handler)(params);
         this.responseEvent.emit({
           type: 'result',
           result,
