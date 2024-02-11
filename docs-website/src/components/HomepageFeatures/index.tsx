@@ -11,31 +11,31 @@ type FeatureItem = {
 const FeatureList: FeatureItem[] = [
   {
     title: 'Easy to Use',
-    Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
+    Svg: require('@site/static/img/plus.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and used to get your website up and running
-        quickly.
+        <code>npm i lite-utility</code>
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
-    Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
+    title: 'Functionality',
+    Svg: require('@site/static/img/functionality.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go ahead and move your docs into the{' '}
-        <code>docs</code> directory.
+        Simple timer, repeat timer, retry timer, endlessly timer, stopwatch, event emitter,
+        subscribable event, subscribable state, throttle function, debounce function,
+        once at a time working function, in memory slider, cache class, simple logger,
+        cancelation operation, pipe functions, try catch function wrapper and other...
       </>
     ),
   },
   {
-    title: 'Powered by React',
-    Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
+    title: 'Reliability',
+    Svg: require('@site/static/img/reliability.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can be extended while reusing the same
-        header and footer.
+       All code is covered with unit tests.
       </>
     ),
   },

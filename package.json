@@ -1,12 +1,28 @@
 {
   "name": "lite-utility",
-  "version": "0.0.2",
+  "version": "0.0.10",
   "type": "module",
   "files": [
     "dist"
   ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
+  "keywords": [
+    "lite",
+    "utility",
+    "timer",
+    "stopwatch",
+    "slides",
+    "emitter",
+    "event",
+    "state",
+    "throttle",
+    "debounce",
+    "cache",
+    "logger",
+    "pipe functions",
+    "try catch"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -48,6 +64,7 @@
   "scripts": {
     "dev:docs": "npm run start --prefix docs-website",
     "build": "npm run check && vite build",
+    "prepublishOnly": "npm run build",
     "preview": "vite preview",
     "check": "npm run prettier && npm run lint && tsc && vitest run",
     "lint": "eslint --ext .ts .",

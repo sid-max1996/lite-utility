@@ -8,6 +8,7 @@ export default defineConfig({
     eslint(),
     dts({
       outDir: 'dist',
+      rollupTypes: true,
     }),
   ],
   resolve: {
