@@ -1,18 +1,21 @@
 ---
-sidebar_position: 1
+sidebar_position: 4
 ---
 
-# Simple timer
+# Endlessly timer
 
-It is a simple timer to delay function execution by some time in milliseconds.
+It is a endlessly timer to delay function execution by some time in milliseconds and repeat this endlessly.
 
 ```js
-import { LiteTimer } from 'lite-utility/timers'
+import { LiteEndlesslyTimer } from 'lite-utility/timers'
 
-const timer = new LiteTimer(() => {
-  console.log('Simple timer worked')
-}, 5000)
-// After start call timer will work after 5s
+const timer = new LiteEndlesslyTimer(() => {
+  console.log('Endlessly timer worked')
+}, 5000,
+{
+  instantStart: false,
+})
+// After start call timer will work after 5s, 10s, 15s, 20s...
 timer.start()
 ```
 
@@ -22,10 +25,11 @@ timer.start()
 constructor(
   fun: () => void, // function
   timeMs: number, // function execution delay
-  params?: TimerParams, // extra params
+  params: TimerParams, // extra params
 ) {}
 
 type TimerParams = {
+  instantStart: boolean; // should first function run be instant instead of waiting timeMs delay
   logError?: (...args: any[]) => void; // custom log error in fun
 };
 ```
