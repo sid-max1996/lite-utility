@@ -6,7 +6,9 @@ sidebar_position: 4
 
 It is a endlessly timer to delay function execution by some time in milliseconds and repeat this endlessly.
 
-```js
+## Example
+
+```ts
 import { LiteEndlesslyTimer } from 'lite-utility/timers'
 
 const timer = new LiteEndlesslyTimer(() => {
@@ -23,20 +25,20 @@ timer.start()
 
 ```ts
 constructor(
-  fun: () => void, // function
-  timeMs: number, // function execution delay
-  params: TimerParams, // extra params
+  fun: () => void, // function.
+  timeMs: number, // function execution delay.
+  params: TimerParams, // extra params.
 ) {}
 
 type TimerParams = {
-  instantStart: boolean; // should first function run be instant instead of waiting timeMs delay
-  logError?: (...args: any[]) => void; // custom log error in fun
+  instantStart: boolean; // should first function run be instant instead of waiting timeMs delay.
+  logError?: (...args: any[]) => void; // custom log error in fun.
 };
 ```
 
 ## Methods
 
-**start()**: _void_ - Start timer
+**start**(): ```void``` - Start timer.
 
 :::warning
 
@@ -44,7 +46,7 @@ If you call start many times instead of restarting, it will lead to the loss of 
 
 :::
 
-**stop()**: _void_ - Stop timer
+**stop**(): ```void``` - Stop timer.
 
-**restart()**: _void_ - Restart timer
+**restart**(): ```void``` - Restart timer.
  

@@ -6,13 +6,15 @@ sidebar_position: 1
 
 It is a simple timer to delay function execution by some time in milliseconds.
 
-```js
+## Example
+
+```ts
 import { LiteTimer } from 'lite-utility/timers'
 
 const timer = new LiteTimer(() => {
   console.log('Simple timer worked')
 }, 5000)
-// After start call timer will work after 5s
+// After start call timer will work after 5s.
 timer.start()
 ```
 
@@ -20,19 +22,19 @@ timer.start()
 
 ```ts
 constructor(
-  fun: () => void, // function
-  timeMs: number, // function execution delay
-  params?: TimerParams, // extra params
+  fun: () => void, // function.
+  timeMs: number, // function execution delay.
+  params?: TimerParams, // extra params.
 ) {}
 
 type TimerParams = {
-  logError?: (...args: any[]) => void; // custom log error in fun
+  logError?: (...args: any[]) => void; // custom log error in fun.
 };
 ```
 
 ## Methods
 
-**start()**: _void_ - Start timer
+**start**(): ```void``` - Start timer.
 
 :::warning
 
@@ -40,7 +42,7 @@ If you call start many times instead of restarting, it will lead to the loss of 
 
 :::
 
-**stop()**: _void_ - Stop timer
+**stop**(): ```void``` - Stop timer.
 
-**restart()**: _void_ - Restart timer
+**restart**(): ```void``` - Restart timer.
  

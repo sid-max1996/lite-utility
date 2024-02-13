@@ -6,7 +6,9 @@ sidebar_position: 2
 
 It is a retry timer that will delay function execution and repeat this delay execution until the function is called without error or reaches the _maxTryCount_ limit.
 
-```js
+## Example
+
+```ts
 import { LiteRetryTimer } from 'lite-utility/timers'
 
 const timer1 = new LiteRetryTimer(
@@ -19,7 +21,7 @@ const timer1 = new LiteRetryTimer(
     maxTryCount: 3,
   }
 );
-// After start call timer will work after 5s
+// After start call timer will work after 5s.
 timer1.start()
 
 const timer2 = new LiteRetryTimer(
@@ -27,16 +29,16 @@ const timer2 = new LiteRetryTimer(
     console.log("Retry timer2 worked");
   },
   {
-    2: 10000, // 1 and 2 call after 10s
-    6: 20000, // 3 - 6 calls after 20s
-    7: 30000, // 7 call after 30s
+    2: 10000, // 1 and 2 call after 10s.
+    6: 20000, // 3 - 6 calls after 20s.
+    7: 30000, // 7 call after 30s.
   },
   {
     instantStart: false,
     maxTryCount: 7,
   },
 );
-// After start call timer will work after 10s
+// After start call timer will work after 10s.
 timer2.start()
 ```
 
@@ -44,24 +46,24 @@ timer2.start()
 
 ```ts
 constructor(
-  fun: () => void, // function
-  timeMs: number | RangeTimes, // function execution delay
-  params: TimerParams, // extra params
+  fun: () => void, // function.
+  timeMs: number | RangeTimes, // function execution delay.
+  params: TimerParams, // extra params.
 ) {}
 
 type TimerParams = {
-  instantStart: boolean; // should first function run be instant instead of waiting timeMs delay
-  maxTryCount: number; // the max posible function run count after the start() call
-  logError?: (...args: any[]) => void; // custom log error in fun
+  instantStart: boolean; // should first function run be instant instead of waiting timeMs delay.
+  maxTryCount: number; // the max posible function run count after the start() call.
+  logError?: (...args: any[]) => void; // custom log error in fun.
 };
 
 /*
 dictionary <max call count : function execution delay>
 @example
 {
-  2: 10000, // 1 and 2 call after 10s
-  6: 20000, // 3 - 6 calls after 20s
-  7: 30000, // 7 call after 30s
+  2: 10000, // 1 and 2 call after 10s.
+  6: 20000, // 3 - 6 calls after 20s.
+  7: 30000, // 7 call after 30s.
 }
 */
 type RangeTimes = Record<number, number>;
@@ -69,11 +71,11 @@ type RangeTimes = Record<number, number>;
 
 ## Fields
 
-**runCount**: _number_ - The function run count after the start() call
+**runCount**: ```number``` - The function run count after the start() call.
 
 ## Methods
 
-**start()**: _void_ - Start timer
+**start**(): ```void``` - Start timer.
 
 :::warning
 
@@ -81,7 +83,7 @@ If you call start many times instead of restarting, it will lead to the loss of 
 
 :::
 
-**stop()**: _void_ - Stop timer
+**stop**(): ```void``` - Stop timer.
 
-**restart()**: _void_ - Restart timer
+**restart**(): ```void``` - Restart timer.
  
