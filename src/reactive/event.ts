@@ -46,8 +46,9 @@ export class LiteEvent<T> extends LiteAutoBind implements IEvent<T> {
 
   public emit(data: T) {
     this.execute(data, this.handlers);
-    this.execute(data, this.onceHandlers);
+    const curOnceHandlers = this.onceHandlers;
     this.onceHandlers = [];
+    this.execute(data, curOnceHandlers);
   }
 
   public once(handler: (data: T) => void): () => void {
