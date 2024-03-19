@@ -1,2 +1,4 @@
 v0.0.11
   fix: LiteEvent once repeated calls not works
+v0.0.16
+  chore: package.json types
