@@ -1,13 +1,10 @@
 {
   "name": "lite-utility",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "type": "module",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "keywords": [
     "lite",
     "utility",
@@ -26,46 +23,47 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": "./index.js",
+      "require": "./index.cjs"
     },
     "./function": {
-      "import": "./dist/function.js",
-      "require": "./dist/function.cjs"
+      "import": "./function.js",
+      "require": "./function.cjs"
     },
     "./reactive": {
-      "import": "./dist/reactive.js",
-      "require": "./dist/reactive.cjs"
+      "import": "./reactive.js",
+      "require": "./reactive.cjs"
     },
     "./services": {
-      "import": "./dist/services.js",
-      "require": "./dist/services.cjs"
+      "import": "./services.js",
+      "require": "./services.cjs"
     },
     "./logging": {
-      "import": "./dist/logging.js",
-      "require": "./dist/logging.cjs"
+      "import": "./logging.js",
+      "require": "./logging.cjs"
     },
     "./browser": {
-      "import": "./dist/browser.js",
-      "require": "./dist/browser.cjs"
+      "import": "./browser.js",
+      "require": "./browser.cjs"
     },
     "./react": {
-      "import": "./dist/react.js",
-      "require": "./dist/react.cjs"
+      "import": "./react.js",
+      "require": "./react.cjs"
     },
     "./timers": {
-      "import": "./dist/timers.js",
-      "require": "./dist/timers.cjs"
+      "import": "./timers.js",
+      "require": "./timers.cjs"
     },
     "./vue": {
-      "import": "./dist/vue.js",
-      "require": "./dist/vue.cjs"
+      "import": "./vue.js",
+      "require": "./vue.cjs"
     }
   },
   "scripts": {
     "dev:docs": "npm run start --prefix docs-website",
-    "build": "npm run check && vite build",
-    "prepublishOnly": "npm run build",
+    "build": "npm run check && vite build && npm run copy:pj",
+    "copy:pj": "node -e \"require('fs').cpSync('./package.json', './dist/package.json');\"",
+    "release": "npm run build && cd dist && npm publish",
     "preview": "vite preview",
     "check": "npm run prettier && npm run lint && tsc && vitest run",
     "lint": "eslint --ext .ts .",
