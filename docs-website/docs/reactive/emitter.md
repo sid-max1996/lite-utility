@@ -9,6 +9,8 @@ It is an event emitter object with an event type declaration.
 ## Example
 
 ```ts
+import { LiteEventEmitter } from 'lite-utility/reactive';
+
 const emitter = new LiteEventEmitter<{
   ping: string;
   pong: { code: number; ping: string };
@@ -57,7 +59,7 @@ Console output:
 // EventsT is an events type schema.
 constructor<EventsT>(
   params: {
-    quiet: boolean // print console.error for error in on handler (default: true).
+    quiet: boolean // print console.error for error in on handler (default: false).
   }
 ) {}
 ```

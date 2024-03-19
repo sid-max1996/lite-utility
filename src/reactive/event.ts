@@ -21,6 +21,14 @@ export class LiteEvent<T> extends LiteAutoBind implements IEvent<T> {
   private handlers: ((data: T) => void)[] = [];
   private onceHandlers: ((data: T) => void)[] = [];
 
+  constructor(
+    private readonly params = {
+      quiet: false,
+    },
+  ) {
+    super();
+  }
+
   public on(handler: (data: T) => void): () => void {
     this.handlers.push(handler);
     return () => {
@@ -38,8 +46,10 @@ export class LiteEvent<T> extends LiteAutoBind implements IEvent<T> {
       try {
         h(data);
       } catch (err) {
-        /* tslint:disable-next-line */
-        console.error(err);
+        if (!this.params.quiet) {
+          /* tslint:disable-next-line */
+          console.error(err);
+        }
       }
     });
   }
