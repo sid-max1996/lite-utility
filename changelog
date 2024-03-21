@@ -9,3 +9,5 @@ v0.0.18
   refactor(frequency): added memoLastResult param and WithTeardown function
   refactor(frequency): renamed onceAtATime to nextWaitsPrev
   feat(frequency): added nextCancelsPrev function
+v0.0.19
+  feat(utility): added getterAndSetter

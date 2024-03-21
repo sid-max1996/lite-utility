@@ -9,3 +9,17 @@ export function promisifyFn<R, T extends any[]>(fn: (...args: T) => R | Promise<
 export async function wait(delay: number) {
   await new Promise((resolve) => setTimeout(resolve, delay));
 }
+
+export function getterAndSetter<T>(initValue: T) {
+  let value = initValue;
+
+  function getValue() {
+    return value;
+  }
+
+  function setValue(newValue: T) {
+    value = newValue;
+  }
+
+  return [getValue, setValue];
+}
