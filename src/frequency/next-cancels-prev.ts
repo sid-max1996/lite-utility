@@ -1,10 +1,8 @@
 import { promisifyFn, wait } from '@/utility';
 import { Cancelable, CreateParams, ResultFunction, TeardownTuple } from './types';
 
-type NextCancelsPrevFn<ResT, ArgT> = (arg: ArgT, checkCanceled: () => boolean, executeCount: number) => ResT;
-
 export function nextCancelsPrev<ResT, ArgT = void>(
-  fn: NextCancelsPrevFn<ResT, ArgT>,
+  fn: (arg: ArgT, checkCanceled: () => boolean, executeCount: number) => ResT,
   memoLastResult: boolean = false,
 ): ResultFunction<ResT, [ArgT]> {
   return _createNextCancelsPrev(fn, {
@@ -13,7 +11,7 @@ export function nextCancelsPrev<ResT, ArgT = void>(
 }
 
 export function nextCancelsPrevWithTeardown<ResT, ArgT = void>(
-  fn: NextCancelsPrevFn<ResT, ArgT>,
+  fn: (arg: ArgT, checkCanceled: () => boolean, executeCount: number) => ResT,
   memoLastResult: boolean = false,
 ): TeardownTuple<ResT, [ArgT]> {
   return _createNextCancelsPrev(fn, {
@@ -23,7 +21,7 @@ export function nextCancelsPrevWithTeardown<ResT, ArgT = void>(
 }
 
 function _createNextCancelsPrev<ResT, ArgT>(
-  fn: NextCancelsPrevFn<ResT, ArgT>,
+  fn: (arg: ArgT, checkCanceled: () => boolean, executeCount: number) => ResT,
   params?: CreateParams,
 ): ResultFunction<ResT, [ArgT]> | TeardownTuple<ResT, [ArgT]> {
   let isExecuting = false;
