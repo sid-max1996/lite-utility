@@ -136,8 +136,8 @@ describe('frequency', async () => {
   });
 
   it('nextCancelsPrev', async () => {
-    const mockFn = vi.fn((arg: number) => {
-      return arg;
+    const mockFn = vi.fn((_ctx, num: number) => {
+      return num;
     });
     const [nextCancelsPrevFn, teardown] = nextCancelsPrevWithTeardown(mockFn, true);
     expect(mockFn).toHaveBeenCalledTimes(0);

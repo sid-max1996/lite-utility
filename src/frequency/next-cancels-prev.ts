@@ -1,29 +1,30 @@
 import { promisifyFn, wait } from '@/utility';
 import { Cancelable, CreateParams, ResultFunction, TeardownTuple } from './types';
 
-export function nextCancelsPrev<ResT, ArgT = void>(
-  fn: (arg: ArgT, checkCanceled: () => boolean, executeCount: number) => ResT,
+type Context = { checkCanceled: () => boolean; executeCount: number };
+export function nextCancelsPrev<ResT, ArgsT extends any[]>(
+  fn: (ctx: Context, ...args: ArgsT) => ResT,
   memoLastResult: boolean = false,
-): ResultFunction<ResT, [ArgT]> {
+): ResultFunction<ResT, ArgsT> {
   return _createNextCancelsPrev(fn, {
     memoLastResult,
-  }) as ResultFunction<ResT, [ArgT]>;
+  }) as ResultFunction<ResT, ArgsT>;
 }
 
-export function nextCancelsPrevWithTeardown<ResT, ArgT = void>(
-  fn: (arg: ArgT, checkCanceled: () => boolean, executeCount: number) => ResT,
+export function nextCancelsPrevWithTeardown<ResT, ArgsT extends any[]>(
+  fn: (ctx: Context, ...args: ArgsT) => ResT,
   memoLastResult: boolean = false,
-): TeardownTuple<ResT, [ArgT]> {
+): TeardownTuple<ResT, ArgsT> {
   return _createNextCancelsPrev(fn, {
     memoLastResult,
     returnTeardownTuple: true,
-  }) as TeardownTuple<ResT, [ArgT]>;
+  }) as TeardownTuple<ResT, ArgsT>;
 }
 
-function _createNextCancelsPrev<ResT, ArgT>(
-  fn: (arg: ArgT, checkCanceled: () => boolean, executeCount: number) => ResT,
+function _createNextCancelsPrev<ResT, ArgsT extends any[]>(
+  fn: (ctx: Context, ...args: ArgsT) => ResT,
   params?: CreateParams,
-): ResultFunction<ResT, [ArgT]> | TeardownTuple<ResT, [ArgT]> {
+): ResultFunction<ResT, ArgsT> | TeardownTuple<ResT, ArgsT> {
   let isExecuting = false;
   let lastResult: Awaited<ResT> | undefined;
   let lastTime = 0;
@@ -35,7 +36,7 @@ function _createNextCancelsPrev<ResT, ArgT>(
     nextTime = 0;
   };
 
-  const nextCancelsPrevFn = (async (arg: ArgT): Promise<Cancelable<Awaited<ResT>>> => {
+  const nextCancelsPrevFn = (async (...args: ArgsT): Promise<Cancelable<Awaited<ResT>>> => {
     if (isExecuting) {
       teardown();
       const curNextTime = Date.now();
@@ -65,7 +66,7 @@ function _createNextCancelsPrev<ResT, ArgT>(
       const checkCurCanceled = () => {
         return lastTime !== curTime;
       };
-      nextResult = await _fn(arg, checkCurCanceled, executeCount);
+      nextResult = await _fn({ checkCanceled: checkCurCanceled, executeCount }, ...args);
       // if teardown was called
       if (checkCurCanceled()) {
         return { type: 'canceled', prevValue: lastResult };
