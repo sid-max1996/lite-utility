@@ -2,3 +2,4 @@ node_modules/
 dist/
 .prettierrc.cjs
 docs-website
+changelog
