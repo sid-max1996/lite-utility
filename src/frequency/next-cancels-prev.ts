@@ -3,7 +3,7 @@ import { Cancelable, CreateParams, ResultFunction, TeardownTuple } from './types
 
 type NextCancelsPrevFn<ResT, ArgT> = (arg: ArgT, checkCanceled: () => boolean, executeCount: number) => ResT;
 
-export function nextCancelsPrev<ResT, ArgT>(
+export function nextCancelsPrev<ResT, ArgT = void>(
   fn: NextCancelsPrevFn<ResT, ArgT>,
   memoLastResult: boolean = false,
 ): ResultFunction<ResT, [ArgT]> {
@@ -12,7 +12,7 @@ export function nextCancelsPrev<ResT, ArgT>(
   }) as ResultFunction<ResT, [ArgT]>;
 }
 
-export function nextCancelsPrevWithTeardown<ResT, ArgT>(
+export function nextCancelsPrevWithTeardown<ResT, ArgT = void>(
   fn: NextCancelsPrevFn<ResT, ArgT>,
   memoLastResult: boolean = false,
 ): TeardownTuple<ResT, [ArgT]> {

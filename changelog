@@ -11,3 +11,5 @@ v0.0.18
   feat(frequency): added nextCancelsPrev function
 v0.0.19
   feat(utility): added getterAndSetter
+v0.0.20*
+  fix(frequency): fixed void fn param in nextCancelsPrev
