@@ -1,6 +1,6 @@
 {
   "name": "lite-utility",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "type": "module",
   "main": "./index.cjs",
   "module": "./index.js",
@@ -57,6 +57,10 @@
     "./vue": {
       "import": "./vue.js",
       "require": "./vue.cjs"
+    },
+    "./frequency": {
+      "import": "./frequency.js",
+      "require": "./frequency.cjs"
     }
   },
   "scripts": {

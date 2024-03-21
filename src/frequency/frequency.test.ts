@@ -1,6 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { Cancelable, debounce, onceAtATime, throttle } from './frequency';
-import { wait } from './utility';
+import {
+  Cancelable,
+  debounceWithTeardown,
+  nextWaitsPrevWithTeardown,
+  throttleWithTeardown,
+  nextCancelsPrevWithTeardown,
+} from './index';
+import { wait } from '@/utility';
 
 const createSumAndIncrementFn = () => {
   let curNum = 1;
@@ -18,7 +24,7 @@ describe('frequency', async () => {
   });
 
   it('throttle', async () => {
-    const [throttleFn, teardown] = throttle(mockFn, 1000);
+    const [throttleFn, teardown] = throttleWithTeardown(mockFn, 1000, true);
     expect(mockFn).toHaveBeenCalledTimes(0);
     expect(await throttleFn(10, 4)).toEqual({ type: 'executed', value: 15 }); // 10 + 4 + 1
     expect(mockFn).toHaveBeenCalledTimes(1);
@@ -33,7 +39,7 @@ describe('frequency', async () => {
   });
 
   it('debounce', async () => {
-    const [debounceFn, teardown] = debounce(mockFn, 1000);
+    const [debounceFn, teardown] = debounceWithTeardown(mockFn, 1000, true);
     // normal operation
     expect(mockFn).toHaveBeenCalledTimes(0);
     let res1: Cancelable<number> | undefined;
@@ -87,12 +93,12 @@ describe('frequency', async () => {
     expect(mockFn).toHaveBeenCalledTimes(3);
   });
 
-  it('onceAtATimeFn', async () => {
-    const [onceAtATimeFn, teardown] = onceAtATime(mockFn);
+  it('nextWaitsPrev', async () => {
+    const [nextWaitsPrevFn, teardown] = nextWaitsPrevWithTeardown(mockFn, true);
     expect(mockFn).toHaveBeenCalledTimes(0);
     // simple call
     let res1: Cancelable<number> | undefined;
-    onceAtATimeFn(10, 4).then((res) => {
+    nextWaitsPrevFn(10, 4).then((res) => {
       res1 = res;
     });
     await wait(0);
@@ -101,7 +107,7 @@ describe('frequency', async () => {
 
     // teardown
     let res2: Cancelable<number> | undefined;
-    onceAtATimeFn(10, 5).then((res) => {
+    nextWaitsPrevFn(10, 5).then((res) => {
       res2 = res;
     });
     teardown();
@@ -111,15 +117,15 @@ describe('frequency', async () => {
 
     // many calls
     let res3: Cancelable<number> | undefined;
-    onceAtATimeFn(10, 6).then((res) => {
+    nextWaitsPrevFn(10, 6).then((res) => {
       res3 = res;
     });
     let res4: Cancelable<number> | undefined;
-    onceAtATimeFn(10, 7).then((res) => {
+    nextWaitsPrevFn(10, 7).then((res) => {
       res4 = res;
     });
     let res5: Cancelable<number> | undefined;
-    onceAtATimeFn(10, 8).then((res) => {
+    nextWaitsPrevFn(10, 8).then((res) => {
       res5 = res;
     });
     await wait(0);
@@ -127,5 +133,52 @@ describe('frequency', async () => {
     expect(res4).toEqual({ type: 'canceled', prevValue: 15 });
     expect(res3).toEqual({ type: 'executed', value: 22, prevValue: 15 }); // 10 + 8 + 4
     expect(mockFn).toHaveBeenCalledTimes(4);
+  });
+
+  it('nextCancelsPrev', async () => {
+    const mockFn = vi.fn((arg: number) => {
+      return arg;
+    });
+    const [nextCancelsPrevFn, teardown] = nextCancelsPrevWithTeardown(mockFn, true);
+    expect(mockFn).toHaveBeenCalledTimes(0);
+    // simple call
+    let res1: Cancelable<number> | undefined;
+    nextCancelsPrevFn(1).then((res) => {
+      res1 = res;
+    });
+    await wait(0);
+    expect(res1).toEqual({ type: 'executed', value: 1 }); // 1
+    expect(mockFn).toHaveBeenCalledTimes(1);
+
+    // teardown
+    let res2: Cancelable<number> | undefined;
+    nextCancelsPrevFn(2).then((res) => {
+      res2 = res;
+    });
+    teardown();
+    await wait(0);
+    expect(res2).toEqual({ type: 'canceled', prevValue: 1 });
+    expect(mockFn).toHaveBeenCalledTimes(2);
+
+    // many calls
+    let res3: Cancelable<number> | undefined;
+    nextCancelsPrevFn(3).then((res) => {
+      res3 = res;
+    });
+    let res4: Cancelable<number> | undefined;
+    nextCancelsPrevFn(4).then((res) => {
+      res4 = res;
+    });
+    let res5: Cancelable<number> | undefined;
+    nextCancelsPrevFn(5).then((res) => {
+      res5 = res;
+    });
+    await wait(0);
+    expect(res3).toEqual({ type: 'canceled', prevValue: 1 });
+    await wait(0);
+    expect(res4).toEqual({ type: 'executed', value: 4, prevValue: 1 });
+    await wait(0);
+    expect(res5).toEqual({ type: 'executed', value: 5, prevValue: 4 });
+    expect(mockFn).toHaveBeenCalledTimes(5);
   });
 });

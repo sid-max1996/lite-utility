@@ -4,3 +4,8 @@ v0.0.16
   chore: package.json types
 v0.0.17
   fix: fix relative imports
+v0.0.18
+  refactor(frequency): separate import
+  refactor(frequency): added memoLastResult param and WithTeardown function
+  refactor(frequency): renamed onceAtATime to nextWaitsPrev
+  feat(frequency): added nextCancelsPrev function

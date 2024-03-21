@@ -29,6 +29,7 @@ export default defineConfig({
         react: resolve(__dirname, './src/react/index.ts'),
         timers: resolve(__dirname, './src/timers/index.ts'),
         vue: resolve(__dirname, './src/vue/index.ts'),
+        frequency: resolve(__dirname, './src/frequency/index.ts'),
       },
       fileName: (format, entryName) => {
         const extension = format === 'es' ? 'js' : 'cjs';
