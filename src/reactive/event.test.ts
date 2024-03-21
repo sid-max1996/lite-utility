@@ -1,7 +1,9 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { LiteEvent } from '.';
 
-const event = new LiteEvent<number>();
+const event = new LiteEvent<number>({
+  quiet: true,
+});
 
 describe('lite-event', () => {
   afterEach(() => {
