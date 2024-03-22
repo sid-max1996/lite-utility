@@ -4,3 +4,4 @@ dist/
 .eslintrc.cjs
 env.d.ts
 docs-website
+changelog.txt
