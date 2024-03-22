@@ -36,26 +36,28 @@ function _createNextCancelsPrev<ResT, ArgsT extends any[]>(
     nextTime = 0;
   };
 
+  let counter = 0;
+
   const nextCancelsPrevFn = (async (...args: ArgsT): Promise<Cancelable<Awaited<ResT>>> => {
+    const curTime = ++counter;
+
     if (isExecuting) {
       teardown();
-      const curNextTime = Date.now();
-      nextTime = curNextTime;
-      const checkNextCanceled = () => {
-        return nextTime !== curNextTime;
+      nextTime = curTime;
+      const isNextWasCanceled = () => {
+        return nextTime !== curTime;
       };
 
       while (isExecuting) {
         await wait(0);
         // if teardown was called or next fn call
-        if (checkNextCanceled()) {
+        if (isNextWasCanceled()) {
           return { type: 'canceled', prevValue: lastResult };
         }
       }
     }
 
     isExecuting = true;
-    const curTime = Date.now();
     const prevValue = lastResult;
     let nextResult: Awaited<ResT> | undefined;
 
@@ -63,12 +65,9 @@ function _createNextCancelsPrev<ResT, ArgsT extends any[]>(
       executeCount += 1;
       const _fn = promisifyFn(fn);
       lastTime = curTime;
-      const checkCurCanceled = () => {
-        return lastTime !== curTime;
-      };
-      nextResult = await _fn({ checkCanceled: checkCurCanceled, executeCount }, ...args);
-      // if teardown was called
-      if (checkCurCanceled()) {
+      const isTeardownWasCalled = () => lastTime !== curTime;
+      nextResult = await _fn({ checkCanceled: isTeardownWasCalled, executeCount }, ...args);
+      if (isTeardownWasCalled()) {
         return { type: 'canceled', prevValue: lastResult };
       }
       if (params?.memoLastResult) {

@@ -1,4 +1,4 @@
-import { promisifyFn } from '@/utility';
+import { promisifyFn, wait } from '@/utility';
 import { Cancelable, CreateParams, ResultFunction, TeardownTuple } from './types';
 
 export function nextWaitsPrev<ResT, ArgsT extends any[]>(
@@ -26,23 +26,35 @@ function _createNextWaitsPrev<ResT, ArgsT extends any[]>(
 ): ResultFunction<ResT, ArgsT> | TeardownTuple<ResT, ArgsT> {
   let isExecuting = false;
   let lastResult: Awaited<ResT> | undefined;
-  let nextArgs: ArgsT | undefined;
   let lastTime = 0;
+  let nextTime = 0;
 
   const teardown = () => {
-    nextArgs = undefined;
     lastTime = 0;
+    nextTime = 0;
   };
 
+  let counter = 0;
+
   const nextWaitsPrevFn = (async (...args: ArgsT): Promise<Cancelable<Awaited<ResT>>> => {
+    const curTime = ++counter;
+
     if (isExecuting) {
-      nextArgs = args;
-      return { type: 'canceled', prevValue: lastResult };
+      nextTime = curTime;
+      const isNextWasCanceled = () => {
+        return nextTime !== curTime;
+      };
+
+      while (isExecuting) {
+        await wait(0);
+        // if teardown was called or next fn call
+        if (isNextWasCanceled()) {
+          return { type: 'canceled', prevValue: lastResult };
+        }
+      }
     }
 
-    nextArgs = undefined;
     isExecuting = true;
-    const curTime = Date.now();
     const prevValue = lastResult;
 
     let nextResult: Awaited<ResT> | undefined;
@@ -50,14 +62,9 @@ function _createNextWaitsPrev<ResT, ArgsT extends any[]>(
       const _fn = promisifyFn(fn);
       lastTime = curTime;
       nextResult = await _fn(...args);
-      while (nextArgs) {
-        const curArgs = nextArgs;
-        nextArgs = undefined;
-        lastTime = curTime;
-        nextResult = await _fn(...curArgs);
-      }
-      // if teardown was called before last nextArgs changing
-      if (lastTime !== curTime) {
+
+      const isTeardownWasCalled = () => lastTime !== curTime;
+      if (isTeardownWasCalled()) {
         return { type: 'canceled', prevValue: lastResult };
       }
       if (params?.memoLastResult) {

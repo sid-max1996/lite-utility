@@ -17,3 +17,5 @@ v0.0.21
   feat(frequency): updated nextCancelsPrev
 v0.0.22*
   feat(utility): created ignoreFirstArg function
+  fix(frequency): fixed nextCancelsPrev algorithm
+  fix(frequency): fixed nextWaitsPrev algorithm

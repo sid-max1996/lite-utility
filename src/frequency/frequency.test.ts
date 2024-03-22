@@ -129,9 +129,11 @@ describe('frequency', async () => {
       res5 = res;
     });
     await wait(0);
-    expect(res5).toEqual({ type: 'canceled', prevValue: 15 });
-    expect(res4).toEqual({ type: 'canceled', prevValue: 15 });
-    expect(res3).toEqual({ type: 'executed', value: 22, prevValue: 15 }); // 10 + 8 + 4
+    expect(res3).toEqual({ type: 'executed', value: 19, prevValue: 15 }); // 10 + 6 + 3
+    await wait(0);
+    expect(res4).toEqual({ type: 'canceled', prevValue: 19 });
+    await wait(0);
+    expect(res5).toEqual({ type: 'executed', value: 22, prevValue: 19 }); // 10 + 8 + 4
     expect(mockFn).toHaveBeenCalledTimes(4);
   });
 
@@ -176,9 +178,9 @@ describe('frequency', async () => {
     await wait(0);
     expect(res3).toEqual({ type: 'canceled', prevValue: 1 });
     await wait(0);
-    expect(res4).toEqual({ type: 'executed', value: 4, prevValue: 1 });
+    expect(res4).toEqual({ type: 'canceled', prevValue: 1 });
     await wait(0);
-    expect(res5).toEqual({ type: 'executed', value: 5, prevValue: 4 });
-    expect(mockFn).toHaveBeenCalledTimes(5);
+    expect(res5).toEqual({ type: 'executed', value: 5, prevValue: 1 });
+    expect(mockFn).toHaveBeenCalledTimes(4);
   });
 });
