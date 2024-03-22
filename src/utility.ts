@@ -23,3 +23,9 @@ export function getterAndSetter<T>(initValue: T) {
 
   return [getValue, setValue];
 }
+
+export function ignoreFirstArg<ResT, ArgsT extends any[]>(fn: (...args: ArgsT) => ResT) {
+  return (_first: any, ...args: ArgsT) => {
+    return fn(...args);
+  };
+}
