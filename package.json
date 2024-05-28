@@ -1,10 +1,20 @@
 {
   "name": "lite-utility",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "type": "module",
   "main": "./index.cjs",
   "module": "./index.js",
   "types": "./index.d.ts",
+  "author": "sid-max1996",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sid-max1996/lite-utility.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sid-max1996/lite-utility/issues"
+  },
+  "homepage": "https://sid-max1996.github.io/lite-utility",
   "keywords": [
     "lite",
     "utility",
@@ -49,8 +59,9 @@
   },
   "scripts": {
     "dev:docs": "npm run start --prefix docs-website",
-    "build": "npm run check && vite build && npm run copy:pj",
+    "build": "npm run check && vite build && npm run copy:pj && npm run copy:readme",
     "copy:pj": "node -e \"require('fs').cpSync('./package.json', './dist/package.json');\"",
+    "copy:readme": "node -e \"require('fs').cpSync('./README.md', './dist/README.md');\"",
     "release": "npm run build && cd dist && npm publish",
     "preview": "vite preview",
     "check": "npm run prettier && npm run lint && tsc && vitest run",

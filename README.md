@@ -2,6 +2,10 @@
 
 A set of tools for quick js ts development
 
+## Documentation
+
+https://sid-max1996.github.io/lite-utility
+
 **Installation**
 
 ```bash
@@ -19,7 +23,3 @@ import { wait } from 'lite-utility';
   console.log('End');
 })();
 ```
-
-## Documentation
-
-https://sid-max1996.github.io/lite-utility

@@ -20,5 +20,7 @@ v0.0.22
   fix(frequency): fixed nextCancelsPrev algorithm
   fix(frequency): fixed nextWaitsPrev algorithm
 v0.0.23
-  feat: Перенос function reactive timers frequency в корневой импорт
-v0.0.24*
+  feat: Move function, reactive, frequency into the root import
+v0.0.24
+  chore: Add README.md and repository link to the npm package page
+v0.0.25*
