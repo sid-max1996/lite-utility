@@ -5,3 +5,7 @@ export * from './slider';
 export * from './promise';
 export * from './cancellation';
 export * from './stopwatch';
+export * from './function';
+export * from './reactive';
+export * from './timers';
+export * from './frequency';

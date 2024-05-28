@@ -9,7 +9,7 @@ It is a simple timer to delay function execution by some time in milliseconds.
 ## Example
 
 ```ts
-import { LiteTimer } from 'lite-utility/timers'
+import { LiteTimer } from 'lite-utility'
 
 const timer = new LiteTimer(() => {
   console.log('Simple timer worked')

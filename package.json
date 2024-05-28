@@ -1,6 +1,6 @@
 {
   "name": "lite-utility",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "type": "module",
   "main": "./index.cjs",
   "module": "./index.js",
@@ -26,14 +26,6 @@
       "import": "./index.js",
       "require": "./index.cjs"
     },
-    "./function": {
-      "import": "./function.js",
-      "require": "./function.cjs"
-    },
-    "./reactive": {
-      "import": "./reactive.js",
-      "require": "./reactive.cjs"
-    },
     "./services": {
       "import": "./services.js",
       "require": "./services.cjs"
@@ -50,17 +42,9 @@
       "import": "./react.js",
       "require": "./react.cjs"
     },
-    "./timers": {
-      "import": "./timers.js",
-      "require": "./timers.cjs"
-    },
     "./vue": {
       "import": "./vue.js",
       "require": "./vue.cjs"
-    },
-    "./frequency": {
-      "import": "./frequency.js",
-      "require": "./frequency.cjs"
     }
   },
   "scripts": {

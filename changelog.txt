@@ -19,4 +19,6 @@ v0.0.22
   feat(utility): created ignoreFirstArg function
   fix(frequency): fixed nextCancelsPrev algorithm
   fix(frequency): fixed nextWaitsPrev algorithm
-v0.0.23*
+v0.0.23
+  feat: Перенос function reactive timers frequency в корневой импорт
+v0.0.24*

@@ -9,7 +9,7 @@ It is a retry timer that will delay function execution and repeat this delay exe
 ## Example
 
 ```ts
-import { LiteRetryTimer } from 'lite-utility/timers'
+import { LiteRetryTimer } from 'lite-utility'
 
 const timer1 = new LiteRetryTimer(
   () => {

@@ -9,7 +9,7 @@ It is a repeat timer that will delay function execution and repeat this delay ex
 ## Example
 
 ```ts
-import { LiteRepeatTimer } from 'lite-utility/timers'
+import { LiteRepeatTimer } from 'lite-utility'
 
 const timer1 = new LiteRepeatTimer(
   () => {

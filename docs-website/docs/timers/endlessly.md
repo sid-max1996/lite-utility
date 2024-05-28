@@ -9,7 +9,7 @@ It is a endlessly timer to delay function execution by some time in milliseconds
 ## Example
 
 ```ts
-import { LiteEndlesslyTimer } from 'lite-utility/timers'
+import { LiteEndlesslyTimer } from 'lite-utility'
 
 const timer = new LiteEndlesslyTimer(() => {
   console.log('Endlessly timer worked')

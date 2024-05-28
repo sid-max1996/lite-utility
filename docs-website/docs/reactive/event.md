@@ -9,7 +9,7 @@ It is an event object for sending and receiving events.
 ## Example
 
 ```ts
-import { LiteEvent } from "lite-utility/reactive";
+import { LiteEvent } from "lite-utility";
 
 const internetEvent = new LiteEvent<boolean>();
 

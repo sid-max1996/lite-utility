@@ -9,7 +9,7 @@ It is an event emitter object with an event type declaration.
 ## Example
 
 ```ts
-import { LiteEventEmitter } from 'lite-utility/reactive';
+import { LiteEventEmitter } from 'lite-utility';
 
 const emitter = new LiteEventEmitter<{
   ping: string;
