@@ -74,6 +74,7 @@ export default class LiteHandler<ParamsT, ResT> extends LiteAutoBind implements 
 
       const onError = ({ name, message, payload, eventId }: ReceiveError) => {
         if (eventId !== curEventId) return;
+        this.responseEvent.off(onResponse);
         const err = new Error(message);
         err.name = name || '';
         (err as any).payload = payload;
@@ -82,6 +83,7 @@ export default class LiteHandler<ParamsT, ResT> extends LiteAutoBind implements 
 
       const onResult = ({ result, eventId }: ReceiveResult<ResT>) => {
         if (eventId !== curEventId) return;
+        this.responseEvent.off(onResponse);
         resolve(result);
       };
 
