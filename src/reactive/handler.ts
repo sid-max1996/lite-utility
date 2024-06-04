@@ -34,7 +34,7 @@ export interface IExecuteHandler<ParamsT, ResT> {
 
 export interface IHandler<ParamsT, ResT> extends IRegiterHandler<ParamsT, ResT>, IExecuteHandler<ParamsT, ResT> {}
 
-export default class LiteHandler<ParamsT, ResT> extends LiteAutoBind implements IHandler<ParamsT, ResT> {
+export class LiteHandler<ParamsT, ResT> extends LiteAutoBind implements IHandler<ParamsT, ResT> {
   // Идентификатор события, чтобы различать разные вызовы execute
   private eventId: number = 0;
 

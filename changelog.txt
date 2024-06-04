@@ -25,3 +25,4 @@ v0.0.24
   chore: Add README.md and repository link to the npm package page
 v0.0.25*
   fix: LiteHandler unsubscribe after getting result
+  fix: LiteHandler import
