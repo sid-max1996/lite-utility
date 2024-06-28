@@ -55,7 +55,7 @@ export function logEventToLogArgs({
   logPrefix,
   logSuffix,
 }: LiteLogEvent): any[] {
-  const name = loggerName ? ` <${loggerName}>` : '';
+  const name = loggerName ? `<${loggerName}>` : '';
   const codeExecutor = executor ? `(${executor})` : '';
   const prefix = logPrefix || '';
   const suffix = logSuffix || '';

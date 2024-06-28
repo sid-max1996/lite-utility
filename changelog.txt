@@ -31,4 +31,6 @@ v0.0.26
   deprecate: LiteCancellationOperation
 v0.0.27
   feat: new logging implementation
-v0.0.28*
+v0.0.28
+  fix: delete logger name empty space
+v0.0.29*
