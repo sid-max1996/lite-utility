@@ -1,9 +1,27 @@
 import { LiteAutoBind } from '@/auto-bind';
-import { LiteEvent } from '@/reactive';
 
 export type LiteLogType = 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR';
 
-export const convertLoggerArgumentToText = (arg: unknown) => {
+export type LiteLogEvent<PayloadT = any> = {
+  type: LiteLogType;
+  timestamp: string;
+  link: string;
+  executor: string;
+  loggerName: string;
+  logPrefix: string;
+  logSuffix: string;
+  logArgs: any[];
+  payload?: PayloadT;
+};
+
+export type LiteLogWritter = {
+  debug(...args: any[]): void;
+  error: (...args: any[]) => void;
+  info: (...args: any[]) => void;
+  warn: (...args: any[]) => void;
+};
+
+export const logArgToString = (arg: unknown) => {
   let newArg: string = '(Not processed arg)!!!';
   if (arg instanceof Error) {
     newArg = `\r\n ${arg.name}` + `\tMessage: ${arg.message}\r\n` + `\tStack: ${arg.stack}\r\n`;
@@ -23,74 +41,94 @@ export const convertLoggerArgumentToText = (arg: unknown) => {
   return newArg;
 };
 
-export type LiteLogWritter = {
-  debug(...args: any[]): void;
-  error: (...args: any[]) => void;
-  info: (...args: any[]) => void;
-  warn: (...args: any[]) => void;
+export function logArgsToString(args: any[]): string {
+  return args.map(logArgToString).join(' ');
+}
+
+export function logEventToLogArgs({
+  timestamp,
+  type,
+  link,
+  loggerName,
+  executor,
+  logArgs,
+  logPrefix,
+  logSuffix,
+}: LiteLogEvent): any[] {
+  const name = loggerName ? ` <${loggerName}>` : '';
+  const codeExecutor = executor ? `(${executor})` : '';
+  const prefix = logPrefix || '';
+  const suffix = logSuffix || '';
+  const codeLink = link ? `\r\n${link}` : '';
+  const args = [timestamp, type, name, codeExecutor, prefix, ...logArgs, suffix, codeLink, '\r\n'];
+  return args.filter((value) => value !== '');
+}
+
+export function logEventToString(logEvent: LiteLogEvent) {
+  return logArgToString(logEventToLogArgs(logEvent));
+}
+
+export type LiteLoggerParams<PayloadT = any> = {
+  handleLog?: (logEvent: LiteLogEvent) => void;
+  executorOffset?: number;
+  loggerName?: string;
+  logPrefix?: string;
+  logSuffix?: string;
+  payload?: PayloadT;
 };
 
-export type LiteLogEvent = {
-  type: LiteLogType;
-  text: string;
-  executor: string;
-};
-
-export type LiteLoggerParams = {
-  logEvent: LiteEvent<LiteLogEvent>;
-  executorOffset: number;
-  loggerName: string;
-  logPrefix: string;
-  logSuffix: string;
-};
-
-export class LiteLogger extends LiteAutoBind implements LiteLogWritter {
-  public readonly logEvent = new LiteEvent<LiteLogEvent>();
+export class LiteLogger<PayloadT = any> extends LiteAutoBind implements LiteLogWritter {
+  private readonly handleLog: (logEvent: LiteLogEvent) => void = () => {};
   private readonly executorOffset: number = 0;
   private readonly loggerName: string = '';
   private readonly logPrefix: string = '';
   private readonly logSuffix: string = '';
+  private readonly payload: PayloadT | undefined = undefined;
 
-  constructor(params: Partial<LiteLoggerParams> = {}) {
+  constructor(params: LiteLoggerParams<PayloadT> = {}) {
     super();
-    this.logEvent = params.logEvent || this.logEvent;
+    this.handleLog = params.handleLog || this.handleLog;
     this.executorOffset = params.executorOffset || this.executorOffset;
     this.loggerName = params.loggerName || this.loggerName;
     this.logPrefix = params.logPrefix || this.logPrefix;
     this.logSuffix = params.logSuffix || this.logSuffix;
+    this.payload = params.payload || this.payload;
   }
 
   debug(...args: any[]): void {
-    this.emit('DEBUG', ...args);
+    this.handle('DEBUG', ...args);
   }
 
   error(...args: any[]): void {
-    this.emit('ERROR', ...args);
+    this.handle('ERROR', ...args);
   }
 
   info(...args: any[]): void {
-    this.emit('INFO', ...args);
+    this.handle('INFO', ...args);
   }
 
   warn(...args: any[]): void {
-    this.emit('WARNING', ...args);
+    this.handle('WARNING', ...args);
   }
 
-  private emit(type: LiteLogType, ...args: any[]): void {
+  private handle(type: LiteLogType, ...args: any[]): void {
     const { executor, link } = this.getExecutorInfo();
-    const codeLink = link ? `\r\n${link}` : '';
-    const loggerName = this.loggerName ? ` <${this.loggerName}>` : '';
-    const logPrefix = this.logPrefix ? `${this.logPrefix} ` : '';
-    const logSuffix = this.logSuffix ? ` ${this.logSuffix}` : '';
-    const text =
-      `${this.getCurrentTime()} ${type}${loggerName} (${executor}) ` +
-      `${logPrefix}${this.argsToString(args)}${logSuffix}` +
-      codeLink +
-      '\r\n';
-    this.logEvent.emit({ type, text, executor });
+    const timestamp = this.getLogCurrentTimestamp();
+
+    this.handleLog({
+      type,
+      timestamp,
+      executor,
+      link,
+      logArgs: args,
+      loggerName: this.loggerName,
+      logPrefix: this.logPrefix,
+      logSuffix: this.logSuffix,
+      payload: this.payload,
+    });
   }
 
-  private getCurrentTime() {
+  private getLogCurrentTimestamp() {
     const addZeroFilter = (num: string): string => {
       return num.length === 1 ? '0' + num : num;
     };
@@ -124,9 +162,5 @@ export class LiteLogger extends LiteAutoBind implements LiteLogWritter {
     }
 
     return { executor, link };
-  }
-
-  private argsToString(args: any[]): string {
-    return args.map(convertLoggerArgumentToText).join(' ');
   }
 }

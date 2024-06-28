@@ -29,4 +29,6 @@ v0.0.25
 v0.0.26
   fix: LiteLogType import
   deprecate: LiteCancellationOperation
-v0.0.27*
+v0.0.27
+  feat: new logging implementation
+v0.0.28*
