@@ -3,6 +3,9 @@ import { wait } from '@/utility';
 import { LiteCanceledError } from './canceled-error';
 import { LiteCancellationToken } from './cancellation-token';
 
+/**
+ * @deprecated use nextCancelsPrev instead
+ */
 export class LiteCancellationOperation<ParamsT, ResultT> extends LiteAutoBind {
   private cancelToken: LiteCancellationToken | null = null;
 

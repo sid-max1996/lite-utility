@@ -1,7 +1,7 @@
 import { LiteAutoBind } from '@/auto-bind';
 import { LiteEvent } from '@/reactive';
 
-type LiteLogType = 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR';
+export type LiteLogType = 'DEBUG' | 'INFO' | 'WARNING' | 'ERROR';
 
 export const convertLoggerArgumentToText = (arg: unknown) => {
   let newArg: string = '(Not processed arg)!!!';
