@@ -65,7 +65,7 @@ export function logEventToLogArgs({
 }
 
 export function logEventToString(logEvent: LiteLogEvent) {
-  return logArgToString(logEventToLogArgs(logEvent));
+  return logArgsToString(logEventToLogArgs(logEvent));
 }
 
 export type LiteLoggerParams<PayloadT = any> = {
