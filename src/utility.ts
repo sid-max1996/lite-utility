@@ -10,7 +10,7 @@ export async function wait(delay: number) {
   await new Promise((resolve) => setTimeout(resolve, delay));
 }
 
-export function getterAndSetter<T>(initValue: T) {
+export function getterAndSetter<T>(initValue: T): [() => T, (newValue: T) => void] {
   let value = initValue;
 
   function getValue() {
