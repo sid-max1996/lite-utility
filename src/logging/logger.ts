@@ -55,13 +55,20 @@ export function logEventToLogArgs({
   logPrefix,
   logSuffix,
 }: LiteLogEvent): any[] {
+  const strIsNotEmpty = (s: string) => s !== '';
+
   const name = loggerName ? `<${loggerName}>` : '';
   const codeExecutor = executor ? `(${executor})` : '';
+  const startLine = [timestamp, type, name, codeExecutor].filter(strIsNotEmpty).join(' ') + '\r\n';
+
   const prefix = logPrefix || '';
   const suffix = logSuffix || '';
-  const codeLink = link ? `\r\n${link}` : '';
-  const args = [timestamp, type, name, codeExecutor, prefix, ...logArgs, suffix, codeLink, '\r\n'];
-  return args.filter((value) => value !== '');
+  const middleLineArgs = [prefix, ...logArgs, suffix].filter(strIsNotEmpty);
+
+  const endLineOrNextLineChar = link ? `\r\n${link}\r\n` : '\r\n';
+
+  const args = [startLine, ...middleLineArgs, endLineOrNextLineChar];
+  return args;
 }
 
 export function logEventToString(logEvent: LiteLogEvent) {

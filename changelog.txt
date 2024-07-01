@@ -35,4 +35,6 @@ v0.0.28
   fix: delete logger name empty space
 v0.0.29
   fix: logEventToString
-v0.0.30*
+v0.0.30
+  feat: logEventToLogArgs text in the middle
+v0.0.31*
