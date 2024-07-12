@@ -39,4 +39,6 @@ v0.0.30
   feat: logEventToLogArgs text in the middle
 v0.0.31
   fix: getterAndSetter return type
-v0.0.32*
+v0.0.32
+  refactor: replace ?? on ||
+v0.0.33*

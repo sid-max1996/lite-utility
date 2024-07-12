@@ -57,9 +57,9 @@ export class LiteHandler<ParamsT, ResT> extends LiteAutoBind implements IHandler
       } catch (err: any) {
         this.responseEvent.emit({
           type: 'error',
-          name: err?.constructor.name ?? null,
-          message: err?.message ?? 'Unknown Error',
-          payload: err?.payload ?? null,
+          name: err?.constructor.name || null,
+          message: err?.message || 'Unknown Error',
+          payload: err?.payload || null,
           eventId,
         });
       }
