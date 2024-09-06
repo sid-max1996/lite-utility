@@ -41,4 +41,6 @@ v0.0.31
   fix: getterAndSetter return type
 v0.0.32
   refactor: replace ?? on ||
-v0.0.33*
+v0.0.33
+  fix: react vue useLiteState
+v0.0.34*

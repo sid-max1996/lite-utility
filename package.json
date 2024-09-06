@@ -1,6 +1,6 @@
 {
   "name": "lite-utility",
-  "version": "0.0.32",
+  "version": "0.0.33",
   "type": "module",
   "main": "./index.cjs",
   "module": "./index.js",

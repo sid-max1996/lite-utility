@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LiteState } from '@/reactive';
 
-export default function useLiteState<T>(state: LiteState<T>) {
+export function useLiteState<T>(state: LiteState<T>) {
   const [value, setValue] = useState<T>(state.get());
 
   useEffect(() => {
