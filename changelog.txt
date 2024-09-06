@@ -43,4 +43,6 @@ v0.0.32
   refactor: replace ?? on ||
 v0.0.33
   fix: react vue useLiteState
-v0.0.34*
+v0.0.34
+  fix: react vue useLiteState types
+v0.0.35*
