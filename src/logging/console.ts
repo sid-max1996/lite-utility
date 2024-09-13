@@ -1,13 +1,13 @@
 import { LiteLogType, LiteLogWritter } from './logger';
 
-export type IConsole = {
+export type ConsoleWritter = {
   debug(...args: any[]): void;
   error(...args: any[]): void;
   log(...args: any[]): void;
   warn(...args: any[]): void;
 };
 
-export function writeLogArgsInConsole(consoleImpl: IConsole, type: LiteLogType, logArgs: unknown[]) {
+export function writeLogArgsInConsole(consoleImpl: ConsoleWritter, type: LiteLogType, logArgs: unknown[]) {
   switch (type) {
     case 'ERROR':
       consoleImpl.error(...logArgs);
@@ -24,7 +24,7 @@ export function writeLogArgsInConsole(consoleImpl: IConsole, type: LiteLogType, 
   }
 }
 
-export function spyConsole(logWritter: LiteLogWritter, { onlyErrors } = { onlyErrors: false }): IConsole {
+export function spyConsole(logWritter: LiteLogWritter, { onlyErrors } = { onlyErrors: false }): ConsoleWritter {
   const cleanConsoleError = console.error.bind(console);
   const cleanConsoleLog = console.log.bind(console);
   const cleanConsoleWarn = console.warn.bind(console);

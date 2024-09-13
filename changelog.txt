@@ -45,4 +45,6 @@ v0.0.33
   fix: react vue useLiteState
 v0.0.34
   fix: react vue useLiteState types
-v0.0.35*
+v0.0.35
+  feat: Lite logger improved
+v0.0.36*

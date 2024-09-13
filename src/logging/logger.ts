@@ -45,38 +45,41 @@ export function logArgsToString(args: any[]): string {
   return args.map(logArgToString).join(' ');
 }
 
-export function logEventToLogArgs({
-  timestamp,
-  type,
-  link,
-  loggerName,
-  executor,
-  logArgs,
-  logPrefix,
-  logSuffix,
-}: LiteLogEvent): any[] {
+export type LogArgsParams = { withDivider?: boolean; withCodeLink?: boolean; withCodeExecutor?: boolean };
+
+export function logEventToLogArgs(
+  { timestamp, type, link, loggerName, executor, logArgs, logPrefix, logSuffix }: LiteLogEvent,
+  { withDivider, withCodeLink, withCodeExecutor }: LogArgsParams = {},
+): any[] {
   const strIsNotEmpty = (s: string) => s !== '';
 
   const name = loggerName ? `<${loggerName}>` : '';
-  const codeExecutor = executor ? `(${executor})` : '';
+  const codeExecutor = withCodeExecutor && executor ? `(${executor})` : '';
   const startLine = [timestamp, type, name, codeExecutor].filter(strIsNotEmpty).join(' ') + '\r\n';
 
   const prefix = logPrefix || '';
   const suffix = logSuffix || '';
   const middleLineArgs = [prefix, ...logArgs, suffix].filter(strIsNotEmpty);
 
-  const endLineOrNextLineChar = link ? `\r\n${link}\r\n` : '\r\n';
+  const endLineOrNextLineChar = withCodeLink && link ? `\r\n${link}\r\n` : '\r\n';
 
-  const args = [startLine, ...middleLineArgs, endLineOrNextLineChar];
+  const args = [
+    startLine,
+    ...middleLineArgs,
+    endLineOrNextLineChar,
+    withDivider ? '--------------------------------------------------------------------------------\r\n' : '',
+  ].filter(strIsNotEmpty);
+
   return args;
 }
 
-export function logEventToString(logEvent: LiteLogEvent) {
-  return logArgsToString(logEventToLogArgs(logEvent));
+export function logEventToString(logEvent: LiteLogEvent, params: LogArgsParams = {}) {
+  return logArgsToString(logEventToLogArgs(logEvent, params));
 }
 
 export type LiteLoggerParams<PayloadT = any> = {
   handleLog?: (logEvent: LiteLogEvent) => void;
+  sourceFolderName?: string;
   executorOffset?: number;
   loggerName?: string;
   logPrefix?: string;
@@ -86,6 +89,7 @@ export type LiteLoggerParams<PayloadT = any> = {
 
 export class LiteLogger<PayloadT = any> extends LiteAutoBind implements LiteLogWritter {
   private readonly handleLog: (logEvent: LiteLogEvent) => void = () => {};
+  private readonly sourceFolderName: string = 'src';
   private readonly executorOffset: number = 0;
   private readonly loggerName: string = '';
   private readonly logPrefix: string = '';
@@ -95,6 +99,7 @@ export class LiteLogger<PayloadT = any> extends LiteAutoBind implements LiteLogW
   constructor(params: LiteLoggerParams<PayloadT> = {}) {
     super();
     this.handleLog = params.handleLog || this.handleLog;
+    this.sourceFolderName = params.sourceFolderName || this.sourceFolderName;
     this.executorOffset = params.executorOffset || this.executorOffset;
     this.loggerName = params.loggerName || this.loggerName;
     this.logPrefix = params.logPrefix || this.logPrefix;
@@ -168,6 +173,31 @@ export class LiteLogger<PayloadT = any> extends LiteAutoBind implements LiteLogW
       executor = matches ? matches[0] : '???';
     }
 
-    return { executor, link };
+    if (link.startsWith('(') && link.endsWith(')')) {
+      link = link.substring(1, link.length - 1);
+    }
+
+    let splitedLink = [link];
+    if (link.includes('/')) {
+      splitedLink = link.split('/');
+    } else if (link.includes('\\')) {
+      splitedLink = link.split('\\');
+    }
+
+    const shortLink = splitedLink
+      .reverse()
+      .reduce<{ skip: boolean; result: string[] }>(
+        (acc, str) => {
+          if (acc.skip) return acc;
+          acc.result.push(str);
+          if (str === this.sourceFolderName) acc.skip = true;
+          return acc;
+        },
+        { skip: false, result: [] },
+      )
+      .result.reverse()
+      .join('/');
+
+    return { executor, link: shortLink ? `(${shortLink})` : '' };
   }
 }
