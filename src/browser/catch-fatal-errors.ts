@@ -6,7 +6,7 @@ export function catchFatalBrowserErrors(handler: (text: string) => void) {
   });
 
   window.addEventListener('unhandledrejection', (event) => {
-    const text = `FATAL ERROR: ${event.type}: ${event.reason}\n`;
+    const text = `FATAL ERROR: ${event.type}: ${event.reason} ${event.reason?.stack}\n`;
     handler(text);
   });
 }

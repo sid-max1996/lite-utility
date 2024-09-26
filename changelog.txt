@@ -49,4 +49,6 @@ v0.0.35
   feat: Lite logger improved
 v0.0.36
   feat: Add deepFreeze
-v0.0.37*
+v0.0.37
+  feat: Add stack to catchFatalBrowserErrors unhandledrejection
+v0.0.38*
